@@ -2,64 +2,6 @@
 #include "detect.hpp"
 
 
-#define NUM 8
-static char i = 0;
-
-CDetect* pCDetectObj[NUM] = {0};
-static uchar numObj = 0;
-
-void createDetect(uchar inNumber,int inwidth,int inheight)
-{
-	printf("enter Create Detect \n");
-	if(inNumber >= 1 && inNumber <=8)
-		numObj = inNumber;
-	else
-	{
-		printf("error num of dectectObj\n");
-		return ;
-	}
-
-	for(int i = 0;i < numObj ;i++)
-	{
-		pCDetectObj[i] = new CDetect();
-		if(NULL == pCDetectObj[i])
-		{
-			printf("error in new pCDetectObj\n");
-			return ;
-		}
-		pCDetectObj[i]->init(inwidth,inheight);
-	}
-	printf("create detectOBJ success \n");
-	return;
-}
-
-void exitDetect()
-{
-	for(int i=0;i<numObj;i++)
-	{
-		if(pCDetectObj[i] != NULL)
-		{
-			delete []pCDetectObj[i];
-			pCDetectObj[i] = NULL;
-		}
-	}
-	printf("exit Detect \n");
-	return ;
-}
-
-void mvDetect(uchar index,uchar* inframe,uchar* outframe,int width,int height,Rect *boundRect)
-{
-	if(index >= 1 && index <=8)
-	{
-		index --;
-		pCDetectObj[index] ->detect(inframe,outframe,width,height,boundRect);
-	}
-	else
-		printf("error index input,must between 1 to 8\n");
-
-	return ;
-}
-
 
 
 CDetect::CDetect()
@@ -128,16 +70,15 @@ Mat CDetect::xtMoveDetect(Mat temp, Mat frame,Rect *boundRect)
 
 
 
-int CDetect::detect(uchar* inframe,uchar* oframe,int width,int height,Rect *boundRect)
+int CDetect::detect(uchar* inframe,uchar* oframe,int width,int height,Rect *boundRect,uchar frameindex)
 {
 	if(height <= 1080 && width <= 1920)
 	{
 		Mat frame = Mat(height,width,CV_8UC3,inframe);
 		Mat result ;
 
-		if (i == 0)//如果为第一帧（temp还为空）
+		if (frameindex == 0)//如果为第一帧（temp还为空）
 		{
-			i++;
 			result = xtMoveDetect(frame, frame,boundRect);//调用MoveDetect()进行运动物体检测，返回值存入result
 		}
 		else//若不是第一帧（temp有值了）
