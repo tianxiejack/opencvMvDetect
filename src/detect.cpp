@@ -121,7 +121,7 @@ Mat CDetect::xtMoveDetect(Mat temp, Mat frame,Rect *boundRect)
         boundRect[i] = boundingRect(contours[i]);
         //printf("boundRect[%d].x = %d,boundRect[%d].y = %d \n",i,boundRect[i].x,i,boundRect[i].y);
         //printf("boundRect[%d].width = %d,boundRect[%d].height = %d \n",i,boundRect[i].width,i,boundRect[i].height);
-        //rectangle(result, boundRect[i], Scalar(0, 0, 255), 2);//在result上绘制正外接矩形
+        rectangle(result, boundRect[i], Scalar(0, 0, 255), 2);//在result上绘制正外接矩形
     }
     return result;//返回result
 }
