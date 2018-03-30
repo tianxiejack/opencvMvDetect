@@ -47,12 +47,12 @@ void exitDetect()
 	return ;
 }
 
-void mvDetect(int index,uchar* inframe,uchar* outframe,int width,int height)
+void mvDetect(uchar index,uchar* inframe,uchar* outframe,int width,int height,Rect *boundRect)
 {
 	if(index >= 1 && index <=8)
 	{
 		index --;
-		pCDetectObj[index] ->detect(inframe,outframe,width,height);
+		pCDetectObj[index] ->detect(inframe,outframe,width,height,boundRect);
 	}
 	else
 		printf("error index input,must between 1 to 8\n");
@@ -80,7 +80,7 @@ void CDetect::init(int inwidth,int inheight)
 }
 
 
-Mat CDetect::xtMoveDetect(Mat temp, Mat frame)
+Mat CDetect::xtMoveDetect(Mat temp, Mat frame,Rect *boundRect)
 {
 	Mat result = frame.clone();
 
@@ -112,24 +112,23 @@ Mat CDetect::xtMoveDetect(Mat temp, Mat frame)
     findContours(diff_thresh, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
     //drawContours(result, contours, -1, Scalar(0, 0, 255), 2);//在result上绘制轮廓
     //7.查找正外接矩形
-    vector<Rect> boundRect(contours.size());
-    int tmpnum = 1;
+    //vector<Rect> boundRect(contours.size());
+    int tmpnum = 6;
     if(tmpnum > contours.size())
     	tmpnum = contours.size();
     for (int i = 0; i < tmpnum; i++)
     {
         boundRect[i] = boundingRect(contours[i]);
-        printf("boundRect[%d].x = %d,boundRect[%d].y = %d \n",i,boundRect[i].x,i,boundRect[i].y);
-        printf("boundRect[%d].width = %d,boundRect[%d].height = %d \n",i,boundRect[i].width,i,boundRect[i].height);
-        rectangle(result, boundRect[i], Scalar(0, 0, 255), 2);//在result上绘制正外接矩形
+        //printf("boundRect[%d].x = %d,boundRect[%d].y = %d \n",i,boundRect[i].x,i,boundRect[i].y);
+        //printf("boundRect[%d].width = %d,boundRect[%d].height = %d \n",i,boundRect[i].width,i,boundRect[i].height);
+        //rectangle(result, boundRect[i], Scalar(0, 0, 255), 2);//在result上绘制正外接矩形
     }
-    putchar(10);
     return result;//返回result
 }
 
 
 
-int CDetect::detect(uchar* inframe,uchar* oframe,int width,int height)
+int CDetect::detect(uchar* inframe,uchar* oframe,int width,int height,Rect *boundRect)
 {
 	if(height <= 1080 && width <= 1920)
 	{
@@ -139,11 +138,11 @@ int CDetect::detect(uchar* inframe,uchar* oframe,int width,int height)
 		if (i == 0)//如果为第一帧（temp还为空）
 		{
 			i++;
-			result = xtMoveDetect(frame, frame);//调用MoveDetect()进行运动物体检测，返回值存入result
+			result = xtMoveDetect(frame, frame,boundRect);//调用MoveDetect()进行运动物体检测，返回值存入result
 		}
 		else//若不是第一帧（temp有值了）
 		{
-			result = xtMoveDetect(temp, frame);//调用MoveDetect()进行运动物体检测，返回值存入result
+			result = xtMoveDetect(temp, frame,boundRect);//调用MoveDetect()进行运动物体检测，返回值存入result
 		}
 		//imshow("QiQi",result);
 		memcpy(oframe,result.data,result.cols*result.rows*3);

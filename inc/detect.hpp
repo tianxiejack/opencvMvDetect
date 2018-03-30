@@ -11,7 +11,7 @@ using namespace std;
 
 void createMvDetect();
 void exitMvDetect();
-int MvDetect(uchar* src,uchar* out,int height,int width);
+void mvDetect(uchar index,uchar* src,uchar* out,int height,int width,Rect *boundRect);
 
 
 class CDetect
@@ -22,8 +22,8 @@ class CDetect
 
 		void init(int inwidth,int inheight);
 		void destory();
-		int detect(uchar* inframe,uchar* oframe,int width,int height);
-		Mat xtMoveDetect(Mat temp, Mat frame);
+		int detect(uchar* inframe,uchar* oframe,int width,int height,Rect *boundRect);
+		Mat xtMoveDetect(Mat temp, Mat frame,Rect *boundRect);
 
 		CDetect* pThis;
 

@@ -3,6 +3,6 @@
 
 extern void createDetect(uchar inNumber,int inwidth,int inheight);
 extern void exitDetect();
-extern void mvDetect(int index,uchar* inframe,uchar* outframe,int width,int height);
+extern void mvDetect(uchar index,uchar* inframe,uchar* outframe,int width,int height,cv::vector<cv::Rect> *boundRect);
 
 #endif
