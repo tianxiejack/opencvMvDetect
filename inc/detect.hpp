@@ -9,10 +9,6 @@
 using namespace cv;
 using namespace std;
 
-void createMvDetect();
-void exitMvDetect();
-void mvDetect(uchar index,uchar* src,uchar* out,int height,int width,Rect *boundRect);
-
 
 class CDetect
 {
