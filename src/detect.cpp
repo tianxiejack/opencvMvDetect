@@ -16,21 +16,18 @@ CDetect::~CDetect()
 
 void CDetect::init(int inwidth,int inheight)
 {
-	temp = Mat(inheight,inwidth,CV_8UC3);
-	temp.data = (uchar*)malloc(inheight*inwidth*3);
+	temp = Mat(inheight,inwidth,CV_8UC1);
+	temp.data = (uchar*)malloc(inheight*inwidth*1);
 	return ;
 }
 
 
-Mat CDetect::xtMoveDetect(Mat temp, Mat frame,Rect *boundRect)
+void CDetect::xtMoveDetect(Mat temp, Mat frame,Rect *boundRect)
 {
-	Mat result = frame.clone();
-
+	//Mat drawtemp = frame.clone();
     //1.将background和frame转为灰度图
-    Mat gray1, gray2;
-
-    cvtColor(temp, gray1, CV_BGR2GRAY);
-    cvtColor(frame, gray2, CV_BGR2GRAY);
+    Mat gray1 = temp;
+    Mat gray2 = frame;
 
     //2.将background和frame做差
     Mat diff;
@@ -58,35 +55,33 @@ Mat CDetect::xtMoveDetect(Mat temp, Mat frame,Rect *boundRect)
     int tmpnum = 6;
     if(tmpnum > contours.size())
     	tmpnum = contours.size();
+
     for (int i = 0; i < tmpnum; i++)
     {
         boundRect[i] = boundingRect(contours[i]);
         //printf("boundRect[%d].x = %d,boundRect[%d].y = %d \n",i,boundRect[i].x,i,boundRect[i].y);
         //printf("boundRect[%d].width = %d,boundRect[%d].height = %d \n",i,boundRect[i].width,i,boundRect[i].height);
-        rectangle(result, boundRect[i], Scalar(0, 0, 255), 2);//在result上绘制正外接矩形
+        //rectangle(drawtemp, boundRect[i], Scalar(0, 0, 255), 2);//在result上绘制正外接矩形
     }
-    return result;//返回result
+    return ;
 }
 
 
 
-int CDetect::detect(uchar* inframe,uchar* oframe,int width,int height,Rect *boundRect,uchar frameindex)
+int CDetect::detect(uchar* inframe,int width,int height,Rect *boundRect,uchar frameindex)
 {
 	if(height <= 1080 && width <= 1920)
 	{
-		Mat frame = Mat(height,width,CV_8UC3,inframe);
-		Mat result ;
+		Mat frame = Mat(height,width,CV_8UC1,inframe);
 
-		if (frameindex == 0)//如果为第一帧（temp还为空）
+		if (frameindex == 0)//如果为第一帧
 		{
-			result = xtMoveDetect(frame, frame,boundRect);//调用MoveDetect()进行运动物体检测，返回值存入result
+			xtMoveDetect(frame, frame,boundRect);//调用MoveDetect()进行运动物体检测，返回值存入result
 		}
 		else//若不是第一帧（temp有值了）
 		{
-			result = xtMoveDetect(temp, frame,boundRect);//调用MoveDetect()进行运动物体检测，返回值存入result
+			xtMoveDetect(temp, frame,boundRect);//调用MoveDetect()进行运动物体检测，返回值存入result
 		}
-		//imshow("QiQi",result);
-		memcpy(oframe,result.data,result.cols*result.rows*3);
 		temp = frame.clone();
 	}
 	return 0;

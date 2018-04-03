@@ -10,7 +10,7 @@ CBgMvDetect* pCBgMvDetectObj[NUM] ={0};
 
 static uchar numObj = 0;
 
-void createDetect(uchar inNumber,int inwidth,int inheight,uchar whichAnaly)
+void createDetect(uchar inNumber,int inwidth,int inheight)
 {
 	printf("enter Create Detect \n");
 	frameindex = 0;
@@ -24,7 +24,8 @@ void createDetect(uchar inNumber,int inwidth,int inheight,uchar whichAnaly)
 
 	for(int i = 0;i < numObj ;i++)
 	{
-		if(whichAnaly)
+		//if(whichAnaly)
+		if(1)
 		{
 			pCDetectObj[i] = new CDetect();
 			if(NULL == pCDetectObj[i])
@@ -49,11 +50,12 @@ void createDetect(uchar inNumber,int inwidth,int inheight,uchar whichAnaly)
 	return;
 }
 
-void exitDetect(uchar whichAnaly)
+void exitDetect()
 {
 	for(int i=0;i<numObj;i++)
 	{
-		if(whichAnaly)
+		//if(whichAnaly)
+		if(1)
 		{
 			if(pCDetectObj[i] != NULL)
 			{
@@ -75,14 +77,15 @@ void exitDetect(uchar whichAnaly)
 	return ;
 }
 
-void mvDetect(uchar index,uchar* inframe,uchar* outframe,int width,int height,Rect *boundRect,uchar whichAnaly)
+void mvDetect(uchar index,uchar* inframe,int width,int height,Rect *boundRect)
 {
-	if(whichAnaly)
+	//if(whichAnaly)
+	if(1)
 	{
 		if(index >= 1 && index <=8)
 		{
 			index --;
-			pCDetectObj[index] ->detect(inframe,outframe,width,height,boundRect,frameindex);
+			pCDetectObj[index] ->detect(inframe,width,height,boundRect,frameindex);
 			if(frameindex == 0)
 				frameindex++;
 		}
@@ -94,7 +97,7 @@ void mvDetect(uchar index,uchar* inframe,uchar* outframe,int width,int height,Re
 		if(index >= 1 && index <=8)
 		{
 			index --;
-			pCBgMvDetectObj[index] ->gbMvDetect(inframe,outframe,width,height,boundRect,frameindex);
+			pCBgMvDetectObj[index] ->gbMvDetect(inframe,NULL,width,height,boundRect,frameindex);
 			if(frameindex == 0)
 				frameindex++;
 		}

@@ -18,8 +18,8 @@ class CDetect
 
 		void init(int inwidth,int inheight);
 		void destory();
-		int detect(uchar* inframe,uchar* oframe,int width,int height,Rect *boundRect,uchar frameindex);
-		Mat xtMoveDetect(Mat temp, Mat frame,Rect *boundRect);
+		int detect(uchar* inframe,int width,int height,cv::Rect *boundRect,uchar frameindex);
+		void xtMoveDetect(cv::Mat temp, cv::Mat frame,cv::Rect *boundRect);
 
 		CDetect* pThis;
 
