@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "detect.hpp"
-
+#include "osa_thr.h"
 
 
 
@@ -68,7 +68,8 @@ void CDetect::xtMoveDetect(Mat temp, Mat frame,Rect *boundRect)
 
 
 
-int CDetect::detect(uchar* inframe,int width,int height,Rect *boundRect,uchar frameindex)
+
+void CDetect::detect(uchar* inframe,int width,int height,Rect *boundRect,uchar frameindex)
 {
 	if(height <= 1080 && width <= 1920)
 	{
@@ -84,5 +85,6 @@ int CDetect::detect(uchar* inframe,int width,int height,Rect *boundRect,uchar fr
 		}
 		temp = frame.clone();
 	}
-	return 0;
+	OSA_thrExit(0);
+	return ;
 }

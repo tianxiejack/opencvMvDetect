@@ -1,14 +1,21 @@
 #include "detect.hpp"
 #include "background.hpp"
 #include "stdio.h"
+#include "osa.h"
+#include "osa_thr.h"
+
 
 #define NUM 8
 static uchar frameindex = 0;
 
 CDetect* pCDetectObj[NUM] = {0};
+parm prm[NUM];
+
 CBgMvDetect* pCBgMvDetectObj[NUM] ={0};
 
+OSA_ThrHndl ObjHandle[NUM];
 static uchar numObj = 0;
+
 
 void createDetect(uchar inNumber,int inwidth,int inheight)
 {
@@ -28,6 +35,7 @@ void createDetect(uchar inNumber,int inwidth,int inheight)
 		if(1)
 		{
 			pCDetectObj[i] = new CDetect();
+			
 			if(NULL == pCDetectObj[i])
 			{
 				printf("error in new pCDetectObj\n");
@@ -77,6 +85,22 @@ void exitDetect()
 	return ;
 }
 
+void* objdetect(void* arg)
+{
+	parm* tmpprm = (parm*)arg;
+	int height = tmpprm->height;
+	int width = tmpprm->width;
+	uchar* inframe = tmpprm->inframe;
+	Rect* boundRect = tmpprm->boundRect;
+	uchar frameindex = tmpprm->frameIndex;
+	uchar index = tmpprm->index;
+	
+	pCDetectObj[index]->detect(inframe, width, height, boundRect, frameindex);
+
+	return NULL;
+}
+
+
 void mvDetect(uchar index,uchar* inframe,int width,int height,Rect *boundRect)
 {
 	//if(whichAnaly)
@@ -85,7 +109,16 @@ void mvDetect(uchar index,uchar* inframe,int width,int height,Rect *boundRect)
 		if(index >= 1 && index <=8)
 		{
 			index --;
-			pCDetectObj[index] ->detect(inframe,width,height,boundRect,frameindex);
+			
+			prm[index].inframe = inframe;
+			prm[index].width = width;
+			prm[index].height = height;
+			prm[index].boundRect = boundRect;
+			prm[index].frameIndex = frameindex;
+			prm[index].index = index;
+			
+			OSA_thrCreate(&ObjHandle[index], objdetect, 0, 0, (void*)&prm[index]);
+			//pCDetectObj[index] ->detect(inframe,width,height,boundRect,frameindex);
 			if(frameindex == 0)
 				frameindex++;
 		}

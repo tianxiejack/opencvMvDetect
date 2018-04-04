@@ -9,6 +9,14 @@
 using namespace cv;
 using namespace std;
 
+typedef struct para_t{
+	uchar* inframe;
+	int width;
+	int height;
+	Rect* boundRect;
+	uchar frameIndex;
+	uchar index;
+}parm;
 
 class CDetect
 {
@@ -18,7 +26,7 @@ class CDetect
 
 		void init(int inwidth,int inheight);
 		void destory();
-		int detect(uchar* inframe,int width,int height,cv::Rect *boundRect,uchar frameindex);
+		void detect(uchar* inframe,int width,int height,cv::Rect *boundRect,uchar frameindex);
 		void xtMoveDetect(cv::Mat temp, cv::Mat frame,cv::Rect *boundRect);
 
 		CDetect* pThis;
@@ -26,14 +34,6 @@ class CDetect
 		Mat temp;
 
 };
-
-
-
-
-
-
-
-
 
 
 
