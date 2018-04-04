@@ -105,6 +105,5 @@ void mvDetect(uchar index,uchar* inframe,int width,int height,Rect *boundRect)
 			printf("error index input,must between 1 to 8\n");
 	}
 
-
 	return ;
 }

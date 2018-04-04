@@ -24,7 +24,7 @@ void CDetect::init(int inwidth,int inheight)
 
 void CDetect::xtMoveDetect(Mat temp, Mat frame,Rect *boundRect)
 {
-	//Mat drawtemp = frame.clone();
+	//Mat drawtemp = frame;
     //1.将background和frame转为灰度图
     Mat gray1 = temp;
     Mat gray2 = frame;
