@@ -32,6 +32,7 @@ class CDetect
 		CDetect* pThis;
 
 		Mat temp;
+		uchar frameindex ;
 
 };
 

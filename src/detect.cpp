@@ -7,6 +7,7 @@
 CDetect::CDetect()
 {
 	pThis = this;
+	frameindex = 0;
 }
 
 CDetect::~CDetect()

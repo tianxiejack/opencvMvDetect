@@ -6,7 +6,6 @@
 
 
 #define NUM 8
-static uchar frameindex = 0;
 
 CDetect* pCDetectObj[NUM] = {0};
 parm prm[NUM];
@@ -114,13 +113,14 @@ void mvDetect(uchar index,uchar* inframe,int width,int height,Rect *boundRect)
 			prm[index].width = width;
 			prm[index].height = height;
 			prm[index].boundRect = boundRect;
-			prm[index].frameIndex = frameindex;
 			prm[index].index = index;
-			
+	
 			OSA_thrCreate(&ObjHandle[index], objdetect, 0, 0, (void*)&prm[index]);
 			//pCDetectObj[index] ->detect(inframe,width,height,boundRect,frameindex);
-			if(frameindex == 0)
-				frameindex++;
+			if(prm[index].frameIndex == 0)
+			{
+				prm[index].frameIndex ++;
+			}
 		}
 		else
 			printf("error index input,must between 1 to 8\n");
@@ -130,7 +130,7 @@ void mvDetect(uchar index,uchar* inframe,int width,int height,Rect *boundRect)
 		if(index >= 1 && index <=8)
 		{
 			index --;
-			pCBgMvDetectObj[index] ->gbMvDetect(inframe,NULL,width,height,boundRect,frameindex);
+			pCBgMvDetectObj[index] ->gbMvDetect(inframe,NULL,width,height,boundRect,1);
 			if(frameindex == 0)
 				frameindex++;
 		}
