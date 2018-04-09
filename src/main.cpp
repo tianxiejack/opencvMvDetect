@@ -19,7 +19,6 @@ static uchar numObj = 0;
 void createDetect(uchar inNumber,int inwidth,int inheight)
 {
 	printf("enter Create Detect \n");
-	frameindex = 0;
 	if(inNumber >= 1 && inNumber <=8)
 		numObj = inNumber;
 	else
@@ -131,8 +130,6 @@ void mvDetect(uchar index,uchar* inframe,int width,int height,Rect *boundRect)
 		{
 			index --;
 			pCBgMvDetectObj[index] ->gbMvDetect(inframe,NULL,width,height,boundRect,1);
-			if(frameindex == 0)
-				frameindex++;
 		}
 		else
 			printf("error index input,must between 1 to 8\n");
