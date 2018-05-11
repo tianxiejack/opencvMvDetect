@@ -64,6 +64,17 @@ void CDetect::xtMoveDetect(Mat temp, Mat frame,Rect *boundRect)
         //printf("boundRect[%d].width = %d,boundRect[%d].height = %d \n",i,boundRect[i].width,i,boundRect[i].height);
         //rectangle(drawtemp, boundRect[i], Scalar(0, 0, 255), 2);//在result上绘制正外接矩形
     }
+
+    if(tmpnum < 5)
+    {
+    	for(int i = tmpnum ; i <6;i++)
+    	{
+    		boundRect[i].x = 0;
+    		boundRect[i].y = 0;
+    		boundRect[i].width = 0;
+    		boundRect[i].height = 0;
+    	}
+    }
     return ;
 }
 
